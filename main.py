@@ -28,8 +28,6 @@ def get_channel_data(target_url):
     duration = 0
     request = Request(target_url)
     total_lines = len(urlopen(request).readlines())
-    print("lines are:" + str(total_lines))
-    call_input_regex = re.compile(r'silence_(start|end):\s+(\d+\.{0,1}\d+)')
     for line in urlopen(target_url):
         # first line - init call
         if lines_num == 0:
@@ -38,25 +36,23 @@ def get_channel_data(target_url):
         line_contents = line.decode("utf-8")
         # talk begins
         if line_contents.__contains__("silence_start"):
-            # print("boo")
             talk_end = float(re.search(r'silence_start:\s+(\d+\.{0,1}\d+)', line_contents).group(1))
         # talk ends
         elif line_contents.__contains__("silence_end"):
-            # print("m00")
             talk_start = float(re.search(r'silence_end:\s+(\d+\.{0,1}\d+)', line_contents).group(1))
-        # unreadable line
+        # unreadable line - this should not happen at all
         else:
             continue
 
+        # calculate talk tuple [begin, end] for every second file line
+        # update longest monologue if new maximum has been reached
         if lines_num % 2 == 0:
             call_data.insert(int(lines_num / 2), [talk_start, talk_end])
             monologue_duration = talk_end - talk_start
             total_talk_time = total_talk_time + monologue_duration
             if (monologue_duration) > max_monologue:
                 max_monologue = round(monologue_duration,2)
-        # call_data = call_data.insert(lines_num, line_contents)
         lines_num = lines_num + 1
-        # print(lines_num)
 
         # last line - save duration
         if lines_num == total_lines:
@@ -89,13 +85,13 @@ def populated_json(longest_user_monologue, longest_customer_monologue, user_talk
 def init():
     user_data = get_channel_data(CUSTOMER_DATAFILE)
     longest_user_monologue = user_data["max_monologue"]
-    #print(user_data)
+
     customer_data = get_channel_data(USER_DATAFILE)
     longest_customer_monologue = customer_data["max_monologue"]
 
-    #print(customer_data)
     call_duration = (get_talk_duration(user_data, customer_data))
     user_talk_percentage = get_channel_talk_percentage(user_data["total_talk_time"], call_duration)
+
     return populated_json(longest_user_monologue, longest_customer_monologue, user_talk_percentage, user_data["talks"], customer_data["talks"])
 
 
