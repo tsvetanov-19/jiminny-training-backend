@@ -1,3 +1,5 @@
+# Purpose
+Project was written to solve [Jiminny backend task](https://github.com/jiminny/join-the-team/blob/master/backend-task.md):  
 # Installation
 Clone this repo to your machine.
 
