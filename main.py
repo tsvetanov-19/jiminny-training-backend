@@ -83,7 +83,8 @@ def populated_json(longest_user_monologue, longest_customer_monologue, user_talk
     JSON_TEMPLATE["user"] = user
     JSON_TEMPLATE["customer"] = customer
     json_string = json.dumps(JSON_TEMPLATE)
-    #print(json_string)
+    # print final solution outpututqq
+    print(json_string)
 
 
 def init():
