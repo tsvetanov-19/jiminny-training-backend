@@ -34,10 +34,10 @@ def get_channel_data(target_url):
             talk_start = 0
 
         line_contents = line.decode("utf-8")
-        # talk begins
+        # sience begins => talk ends
         if line_contents.__contains__("silence_start"):
             talk_end = float(re.search(r'silence_start:\s+(\d+\.{0,1}\d+)', line_contents).group(1))
-        # talk ends
+        # silence ends => talk begins
         elif line_contents.__contains__("silence_end"):
             talk_start = float(re.search(r'silence_end:\s+(\d+\.{0,1}\d+)', line_contents).group(1))
         # unreadable line - this should not happen at all
@@ -94,7 +94,7 @@ def init():
     customer_data = get_channel_data(USER_DATAFILE)
     longest_customer_monologue = customer_data["max_monologue"]
 
-    call_duration = (get_talk_duration(user_data, customer_data))
+    call_duration = get_talk_duration(user_data, customer_data)
     user_talk_percentage = get_channel_talk_percentage(user_data["total_talk_time"], call_duration)
 
     return populated_json(longest_user_monologue, longest_customer_monologue, user_talk_percentage, user_data["talks"],
