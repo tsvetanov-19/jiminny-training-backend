@@ -88,10 +88,10 @@ def populated_json(longest_user_monologue, longest_customer_monologue, user_talk
 
 
 def init():
-    user_data = get_channel_data(CUSTOMER_DATAFILE)
+    user_data = get_channel_data(USER_DATAFILE)
     longest_user_monologue = user_data["max_monologue"]
 
-    customer_data = get_channel_data(USER_DATAFILE)
+    customer_data = get_channel_data(CUSTOMER_DATAFILE)
     longest_customer_monologue = customer_data["max_monologue"]
 
     call_duration = get_talk_duration(user_data, customer_data)
