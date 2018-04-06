@@ -49,7 +49,6 @@ def get_channel_data(target_url):
         if lines_num % 2 == 0:
             talks.insert(int(lines_num / 2), [talk_start, talk_end])
             monologue_duration = talk_end - talk_start
-            print([talk_end, talk_start, monologue_duration])
             total_talk_time = total_talk_time + monologue_duration
             if monologue_duration > max_monologue:
                 max_monologue = round(monologue_duration, 2)
@@ -83,7 +82,7 @@ def populated_json(longest_user_monologue, longest_customer_monologue, user_talk
     JSON_TEMPLATE["user"] = user
     JSON_TEMPLATE["customer"] = customer
     json_string = json.dumps(JSON_TEMPLATE)
-    # print final solution outpututqq
+    # print final solution
     print(json_string)
 
 
